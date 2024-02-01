@@ -12,6 +12,7 @@ df = pd.DataFrame(result,columns=["idpartida","data","competicao","status_jogo",
 
 colunasUteis = ['data','competicao','time_adversario', 'status_jogo', 'resultado', 'placar']
 df = df[colunasUteis]
+
 # SIDEBAR
 
 with st.sidebar:
@@ -45,6 +46,8 @@ with st.sidebar:
     elif not fCompeticao and fAdversario:
         dadosUsuario = df.query(
             'time_adversario == @fAdversario' 
-        )     
+        ) 
+    else:
+        dadosUsuario = df    
 
 st.dataframe(dadosUsuario)
