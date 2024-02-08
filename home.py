@@ -18,24 +18,32 @@ df = pd.DataFrame(result,columns=["idpartida","data","competicao","status_jogo",
 def team():
     
     selected = option_menu(
-        menu_title='Estatísticas do Time',
-        options=['Desempenho','Gráficos'],
-        orientation='horizontal'                
+        menu_title='Informações do Time',
+        options=['Desempenho','Estatísticas','Gráficos'],
+        orientation='horizontal',
+        icons=['graph-up','bar-chart-fill','pie-chart-fill']          
         )
 
     if selected == 'Desempenho':
+
+        
+        #Tabela
+        compCol, advCol = st.columns(2, gap='large')
         utils_columns = ['competicao','time_adversario', 'resultado', 'placar']
         df_filtered = df[utils_columns]
-        fCompeticao = st.selectbox('Selecione a competição:',
-            options=df['competicao'].unique(), 
-            index=None,
-            placeholder="Sua escolha...",
-            )
-        fAdversario = st.selectbox('Selecione o adversário:',
-            options=df['time_adversario'].unique(),
-            index=None,
-            placeholder="Sua escolha...",
-            ) 
+
+        with compCol:
+            fCompeticao = st.selectbox('Selecione a competição:',
+                options=df['competicao'].unique(), 
+                index=None,
+                placeholder="Sua escolha...",
+                )
+        with advCol:
+            fAdversario = st.selectbox('Selecione o adversário:',
+                options=df['time_adversario'].unique(),
+                index=None,
+                placeholder="Sua escolha...",
+                ) 
         
         if fCompeticao and fAdversario:
             df_filtered = df_filtered.query(
@@ -49,9 +57,7 @@ def team():
             df_filtered = df_filtered.query(
                 'time_adversario == @fAdversario' 
             ) 
-        
-
-        st.header('Tabela')
+        st.header('Tabela',divider='red')
         df_sample = [[],[],[],[]]
 
         for i in df_filtered.values:
@@ -81,6 +87,8 @@ def team():
         else:
             st.write('0 Resultados')
         
+       
+        
 
 
 # SIDEBAR
@@ -90,10 +98,13 @@ with st. sidebar:
     st.image(logo, use_column_width=True)
     selected = option_menu(
         menu_title='Menu',
-        options=['Time','Jogador'],           
+        options=['Home','Time','Jogador'],  
+        icons=['house-fill','people-fill','person-fill']       
         )
 
-if selected == 'Time':
+if selected == 'Home':
+    st.title(f'{selected}')
+elif selected == 'Time':
     team()
 else:
     st.title(f'{selected}')
