@@ -15,7 +15,26 @@ c=conn.cursor()
 
 #fetch
 
-def view_all_data():
+def view_all_data_game():
     c.execute('select * from info_partida order by idpartida')
+    data = c.fetchall()
+    return data
+
+'''def view_all_data_player():
+    c.execute('select * from info_jogador order by idjogador')
+    data = c.fetchall()
+    return data'''
+
+def view_info(search):
+    if search == 'idpartida':
+        c.execute(f'select count({search}) from info_partida')
+    else:
+        c.execute(f'select count(resultado) from info_partida where resultado = "{search}"')
+    data = c.fetchall()
+    data = data[0][0]
+    return data
+
+def view_res():
+    c.execute('select resultado from info_partida')
     data = c.fetchall()
     return data

@@ -1,32 +1,32 @@
 import streamlit as st 
 import pandas as pd
 import query as query
-import plotly.figure_factory as ff
 import plotly.graph_objects as go
-from PIL import Image
 from streamlit_option_menu import option_menu
+from PIL import Image
+
+#css
+with open("style.css") as f:
+    st.markdown(f"<style>{f.read()}</style>",unsafe_allow_html=True)
 
 
 #Query
-result = query.view_all_data()
+result = query.view_all_data_game()
 df = pd.DataFrame(result,columns=["idpartida","data","competicao","status_jogo","time_adversario","placar","resultado","cartoes_amarelos",
                                   "cartoes_vermelhos","gols_feitos","gols_sofridos","finalizacoes_gol","finalizacoes_totais",
                                   "faltas_cometidas","faltas_recebidas","esquema_tatico","decisao_penalti","finalizacoes_sofridas","esquema_tatico_adv"])
 
 
 
-def team():
-    
+def team_func():
     selected = option_menu(
         menu_title='Informações do Time',
         options=['Desempenho','Estatísticas','Gráficos'],
         orientation='horizontal',
-        icons=['graph-up','bar-chart-fill','pie-chart-fill']          
+        icons=['graph-up','bar-chart-fill','pie-chart-fill']         
         )
 
     if selected == 'Desempenho':
-
-        
         #Tabela
         compCol, advCol = st.columns(2, gap='large')
         utils_columns = ['competicao','time_adversario', 'resultado', 'placar']
@@ -85,11 +85,47 @@ def team():
             fig.update_layout(margin=dict(l=5,r=5,b=5,t=10))
             st.write(fig)
         else:
-            st.write('0 Resultados')
+            st.write('0 Resultados')  
         
-       
-        
+    elif selected == 'Estatísticas':
+        ...
 
+    else:
+        st.markdown('### Temporada 2024')
+        res = query.view_res()
+        list_values = []
+        win=0
+        loss=0
+        draw=0
+        for i in range(len(res)):
+            if res[i][0].lower() == 'vitoria':
+                win+=1
+            elif res[i][0].lower() == 'derrota':
+                loss+=1
+            else:
+                draw+=1
+
+        list_values.append(win)
+        list_values.append(loss)
+        list_values.append(draw)
+
+        labels = ['Vitórias', 'Derrotas', 'Empates']
+        colors = ['MediumSeaGreen','FireBrick','LightGray']
+        fig = go.Figure(data=go.Pie(
+            labels=labels,
+            values=list_values,
+            marker_colors=colors,
+            hole=0.5,
+            showlegend=False
+        ))
+        fig.update_traces(textposition="outside", textinfo="value+label")
+        fig.update_layout(annotations=[dict(text="Partidas",
+                                            x=0.5,
+                                            y=0.5,
+                                            font_size=18,
+                                            showarrow=False)])
+
+        st.write(fig)   
 
 # SIDEBAR
 with st. sidebar:
@@ -105,8 +141,8 @@ with st. sidebar:
 if selected == 'Home':
     st.title(f'{selected}')
 elif selected == 'Time':
-    team()
+    team_func()
 else:
     st.title(f'{selected}')
     
-
+ 
