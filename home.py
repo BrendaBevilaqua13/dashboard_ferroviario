@@ -21,7 +21,7 @@ df = pd.DataFrame(result,columns=["idpartida","data","competicao","status_jogo",
 def team_func():
     selected = option_menu(
         menu_title='Informações do Time - Temporada 2024',
-        options=['Desempenho','Estatísticas','Gráficos'],
+        options=['Desempenho','Estatísticas'],
         orientation='horizontal',
         icons=['graph-up','bar-chart-fill','pie-chart-fill']         
         )
@@ -57,7 +57,7 @@ def team_func():
             df_filtered = df_filtered.query(
                 'time_adversario == @fAdversario' 
             ) 
-        st.header('Tabela de Resultados',divider='red')
+        st.subheader('Tabela de Resultados',divider='red')
         df_sample = [[],[],[],[]]
 
         for i in df_filtered.values:
@@ -86,34 +86,9 @@ def team_func():
             fig.update_layout(margin=dict(l=5,r=5,b=5,t=10))
             st.write(fig)
         else:
-            st.write('0 Resultados')  
-    
-        
-    elif selected == 'Estatísticas':
-        col1,col2,col3 = st.columns(3)
-        with col1:
-            st.header('Cartões', divider='red')
-            res = query.view_cards('amarelos')
-            st.info(f'{res[0][0]} AMARELOS', icon="🟨")
-            res = query.view_cards('vermelhos')
-            st.info(f'{res[0][0]} VERMELHOS', icon="🟥")
-        with col2:
-            st.header('Gols', divider='red')
-            res = query.view_goals('feitos')
-            st.info(f'{res[0][0]} GOLS FEITOS', icon="⚽")
-            res = query.view_goals('sofridos')
-            st.info(f'{res[0][0]} GOLS SOFRIDOS', icon="❌")
-        with col3:
-            st.header('Média de Faltas por Jogo', divider='red')
-            res = query.view_fouls('cometidas')
-            res = round(res[0][0] / (query.view_info('idpartida')))
-            st.info(f'{res} FALTAS COMETIDAS', icon="📌")
-            res = query.view_fouls('rebidas')
-            res = round(res[0][0] / (query.view_info('idpartida')))
-            st.info(f'{52} FALTAS SOFRIDAS', icon="📌")
+            st.write('0 Resultados') 
 
-    else:
-        st.markdown('### Temporada 2024')
+        st.subheader('Gráfico das Partidas', divider='red')  
         res = query.view_res()
         list_values = []
         win=0
@@ -149,6 +124,49 @@ def team_func():
 
         st.write(fig)   
 
+    
+        
+    elif selected == 'Estatísticas':
+        col1,col2,col3 = st.columns(3)
+        with col1:
+            st.subheader('Cartões', divider='red')
+            res = query.view_cards('amarelos')
+            st.info(f'{res[0][0]} AMARELOS', icon="🟨")
+            res = query.view_cards('vermelhos')
+            st.info(f'{res[0][0]} VERMELHOS', icon="🟥")
+        with col2:
+            st.subheader('Gols', divider='red')
+            res = query.view_goals('feitos')
+            st.info(f'{res[0][0]} GOLS FEITOS', icon="⚽")
+            res = query.view_goals('sofridos')
+            st.info(f'{res[0][0]} GOLS SOFRIDOS', icon="❌")
+        with col3:
+            st.subheader('Média de Faltas por Jogo', divider='red')
+            res = query.view_fouls('cometidas')
+            res = round(res[0][0] / (query.view_info('idpartida')))
+            st.info(f'{res} FALTAS COMETIDAS', icon="📌")
+            res = query.view_fouls('rebidas')
+            res = round(res[0][0] / (query.view_info('idpartida')))
+            st.info(f'{52} FALTAS SOFRIDAS', icon="📌")
+
+        st.subheader('Finalizações',divider='red')
+
+        #gráfico
+        games = ['jogo1','jogo2','jogo3']
+        fina_totais = [10,15,20]
+        fina_gol = [5,4,3]
+        fina_perdida=[5,11,17]
+
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=games,y=fina_totais,name='Totais de Finalizações',line=dict(color='blue',width=2)))
+        fig.add_trace(go.Scatter(x=games,y=fina_gol,name='Finalizações no Gol',line=dict(color='green',width=2,dash='dash')))
+        fig.add_trace(go.Scatter(x=games,y=fina_perdida,name='Finalizações pra Fora',line=dict(color='firebrick',width=2,dash='dot')))
+        fig.update_layout(xaxis_title='Jogos',yaxis_title='Chutes') 
+        st.write(fig)
+
+
+
+        
 # SIDEBAR
 with st. sidebar:
     st.header('FERROVIÁRIO')
