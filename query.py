@@ -38,3 +38,18 @@ def view_res():
     c.execute('select resultado from info_partida')
     data = c.fetchall()
     return data
+
+def view_cards(color):
+    c.execute(f'select sum(cartoes_{color}_recebidos) from info_partida')
+    data = c.fetchall()
+    return data
+
+def view_goals(search):
+    c.execute(f'select sum(gols_{search}) from info_partida')
+    data = c.fetchall()
+    return data
+
+def view_fouls(search):
+    c.execute(f'select sum(faltas_{search}) from info_partida')
+    data = c.fetchall()
+    return data

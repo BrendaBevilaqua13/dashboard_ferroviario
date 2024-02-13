@@ -20,7 +20,7 @@ df = pd.DataFrame(result,columns=["idpartida","data","competicao","status_jogo",
 
 def team_func():
     selected = option_menu(
-        menu_title='Informações do Time',
+        menu_title='Informações do Time - Temporada 2024',
         options=['Desempenho','Estatísticas','Gráficos'],
         orientation='horizontal',
         icons=['graph-up','bar-chart-fill','pie-chart-fill']         
@@ -57,7 +57,7 @@ def team_func():
             df_filtered = df_filtered.query(
                 'time_adversario == @fAdversario' 
             ) 
-        st.header('Tabela',divider='red')
+        st.header('Tabela de Resultados',divider='red')
         df_sample = [[],[],[],[]]
 
         for i in df_filtered.values:
@@ -65,6 +65,7 @@ def team_func():
             df_sample[1].append(i[1])
             df_sample[2].append(i[2])
             df_sample[3].append(i[3])
+
 
         if not df_filtered.empty:
             fig = go.Figure(data=go.Table(
@@ -86,9 +87,30 @@ def team_func():
             st.write(fig)
         else:
             st.write('0 Resultados')  
+    
         
     elif selected == 'Estatísticas':
-        ...
+        col1,col2,col3 = st.columns(3)
+        with col1:
+            st.header('Cartões', divider='red')
+            res = query.view_cards('amarelos')
+            st.info(f'{res[0][0]} AMARELOS', icon="🟨")
+            res = query.view_cards('vermelhos')
+            st.info(f'{res[0][0]} VERMELHOS', icon="🟥")
+        with col2:
+            st.header('Gols', divider='red')
+            res = query.view_goals('feitos')
+            st.info(f'{res[0][0]} GOLS FEITOS', icon="⚽")
+            res = query.view_goals('sofridos')
+            st.info(f'{res[0][0]} GOLS SOFRIDOS', icon="❌")
+        with col3:
+            st.header('Média de Faltas por Jogo', divider='red')
+            res = query.view_fouls('cometidas')
+            res = round(res[0][0] / (query.view_info('idpartida')))
+            st.info(f'{res} FALTAS COMETIDAS', icon="📌")
+            res = query.view_fouls('rebidas')
+            res = round(res[0][0] / (query.view_info('idpartida')))
+            st.info(f'{52} FALTAS SOFRIDAS', icon="📌")
 
     else:
         st.markdown('### Temporada 2024')

@@ -1,24 +1,33 @@
-.st-ae st-af st-ag st-cn st-ai st-aj st-co st-cp st-c2 st-d1 st-cr st-cs st-ct st-cu st-bu st-bv st-cv st-an st-ap st-aq st-ao st-bs st-d2 st-cx st-b4 st-cy st-as st-at st-bx st-bw st-cz{
-    border-radius: 1rem;
-}
-
-.element-container st-emotion-cache-1h2518b e1f1d6gn4{
-    background-color:#ff4b4b;
-}
 .stAlert{
-    background-color:#ff4b4b;
-    border-radius: 1rem;
-    width: 10rem;
+    border-radius: 0.5rem;
+    width: 18rem;
+    background-color: #FAF9F6;
+    box-shadow: 2px 2px #A9A9A9;
 }
 
 .stAlert p{
-    color: white; 
+    color: black;
     font-size:16px;
     font-weight: bold;
-    font-family: Helvetica,Arial,sans-serif;
-    
+    font-family: Helvetica,Arial,sans-serif; 
+ 
 }
 
 .st-emotion-cache-1y4p8pa{
     max-width: 80rem;
+}
+.st-emotion-cache-9aoz2h{
+max-height: 250px;
+}
+.modebar{
+    visibility: hidden;
+}
+.st-emotion-cache-6awftf{
+    visibility: hidden;
+}
+.element-container st-emotion-cache-mft7kt e1f1d6gn4 .table{
+    max-height: 100px;
+}
+.st-emotion-cache-ocqkz7{
+    max-width: 1250px;
 }
